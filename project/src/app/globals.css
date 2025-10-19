@@ -44,7 +44,7 @@ a {
 	--success: oklch(0.5 0.05 160);
 	--info: oklch(0.5 0.05 260);
 }
-body.dark {
+html.dark, :root.dark {
 	--bg-dark: oklch(0.1 0 205);
 	--bg: oklch(0.15 0 205);
 	--bg-light: oklch(0.2 0 205);
@@ -59,4 +59,22 @@ body.dark {
 	--warning: oklch(0.7 0.05 100);
 	--success: oklch(0.7 0.05 160);
 	--info: oklch(0.7 0.05 260);
+}
+
+html.dark body { 
+    color: var(--text);
+    background: var(--bg);
+}
+
+.color-theme-loading,
+.color-theme-loading body {
+    background-color: oklch(0.96 0 205);
+    transition: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .color-theme-loading,
+    .color-theme-loading body {
+        background-color: oklch(0.15 0 205);
+    }
 }

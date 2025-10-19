@@ -1,31 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import styles from './ThemeSwitch.module.css';
 
 export default function ThemeSwitch() {
     const [isDark, setIsDark] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (typeof window !== "undefined") {
             const saved = localStorage.getItem("theme");
-            if (saved === "dark") {
-                document.body.classList.add("dark");
-                setIsDark(true);
+            const isDarkSaved = saved === "dark" || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+            setIsDark(isDarkSaved);
+            
+            if (isDarkSaved) {
+                document.documentElement.classList.add("dark");
             } else {
-                document.body.classList.remove("dark");
-                setIsDark(false);
+                document.documentElement.classList.remove("dark");
             }
         }
     }, []);
 
     const toggleTheme = () => {
+        const rootElement = document.documentElement;
+        
         if (isDark) {
-            document.body.classList.remove("dark");
+            rootElement.classList.remove("dark");
             localStorage.setItem("theme", "light");
             setIsDark(false);
         } else {
-            document.body.classList.add("dark");
+            rootElement.classList.add("dark");
             localStorage.setItem("theme", "dark");
             setIsDark(true);
         }

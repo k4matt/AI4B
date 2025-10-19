@@ -34,8 +34,10 @@ interface User {
 export default function HomePage() {
 	const [users, setUsers] = useState<User[]>([]);
 	const [search, setSearch] = useState("");
-	const [expanded, setExpanded] = useState<number | null>(null);
+	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 30;
 
 	useEffect(() => {
 		fetch("https://dummyjson.com/users?limit=100")
@@ -47,15 +49,17 @@ export default function HomePage() {
 	}, []);
 
 	const filtered = users.filter((user) =>
-		`${user.firstName} ${user.lastName}`
-			.toLowerCase()
-			.includes(search.toLowerCase())
+		`${user.firstName} ${user.lastName}`.toLowerCase().includes(search.toLowerCase())
 	);
 
-	const toggleExpand = (id: number) => {
-		setExpanded(expanded === id ? null : id);
-	};
+	const totalPages = Math.ceil(filtered.length / itemsPerPage);
+	const paginated = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+	const openUser = (user: User) => setSelectedUser(user);
+	const closeUser = () => setSelectedUser(null);
+
+	const goToPage = (page: number) => setCurrentPage(page);
+	
 	return (
 		<main className={styles.container}>
 			<div className={styles.dash}>
@@ -98,72 +102,86 @@ export default function HomePage() {
 					</button>
 				</div>
 
-				<ul className={styles.list}>
-					{loading
-						? // 🔹 Skeletony
-						  Array.from({ length: 8 }).map((_, i) => (
-								<li key={i} className={`${styles.card} ${styles.skeletonCard}`}>
-									<div className={styles.skeletonHeader}>
-										<div className={styles.skeletonTitle}></div>
-									</div>
-									<div className={styles.skeletonLines}>
-										<div></div>
-									</div>
-								</li>
-						  ))
-						: // 🔹 Użytkownicy
-						  filtered.map((user) => (
-								<li
-									key={user.id}
-									className={`${styles.card} ${
-										expanded === user.id ? styles.expanded : ""
-									}`}
-									onClick={() => toggleExpand(user.id)}
-								>
-									<div className={styles.cardHeader}>
-										<h3>
-											{user.firstName} {user.lastName}
-										</h3>
-										<p>
-											<TbBuildingSkyscraper />
-											{user.company.name}
-										</p>
-									</div>
-
-									{expanded === user.id && (
-										<div className={styles.details}>
+				<div
+					className={`${styles.viewWrapper} ${
+						selectedUser ? styles.showDetails : ""
+					}`}
+				>
+					<ul className={styles.list}>
+						{loading
+							? Array.from({ length: 8 }).map((_, i) => (
+									<li key={i} className={`${styles.card} ${styles.skeletonCard}`}>
+										<div className={styles.skeletonHeader}>
+											<div className={styles.skeletonTitle}></div>
+										</div>
+										<div className={styles.skeletonLines}>
+											<div></div>
+										</div>
+									</li>
+							))
+							: filtered.map((user) => (
+									<li
+										key={user.id}
+										className={styles.card}
+										onClick={() => openUser(user)}
+									>
+										<div className={styles.cardHeader}>
+											<h3>
+												{user.firstName} {user.lastName}
+											</h3>
 											<p>
-												<strong>Telefon:</strong> {user.phone}
-											</p>
-											<p>
-												<strong>Email:</strong> {user.email}
-											</p>
-											<p>
-												<strong>Firma:</strong> {user.company.name}
-											</p>
-											<p>
-												<strong>Stanowisko:</strong> {user.company.title}
-											</p>
-											<p>
-												<strong>Dział:</strong> {user.company.department}
-											</p>
-											<p>
-												<strong>Adres firmy:</strong>{" "}
-												{user.company.address.address},{" "}
-												{user.company.address.city},{" "}
-												{user.company.address.state}{" "}
-												{user.company.address.postalCode}
-											</p>
-											<p>
-												<strong>Adres domowy:</strong> {user.address.address},{" "}
-												{user.address.city}, {user.address.state}{" "}
-												{user.address.postalCode}
+												<TbBuildingSkyscraper />
+												{user.company.name}
 											</p>
 										</div>
-									)}
-								</li>
-						  ))}
-				</ul>
+									</li>
+							))}
+					</ul>
+
+					<div className={styles.userDetails}>
+						{selectedUser ? (
+							<>
+								<button className={styles.backBtn} onClick={closeUser}>
+									← Powrót
+								</button>
+								<h2>
+									{selectedUser.firstName} {selectedUser.lastName}
+								</h2>
+								<p>
+									<strong>Telefon:</strong> {selectedUser.phone}
+								</p>
+								<p>
+									<strong>Email:</strong> {selectedUser.email}
+								</p>
+								<p>
+									<strong>Firma:</strong> {selectedUser.company.name}
+								</p>
+								<p>
+									<strong>Stanowisko:</strong> {selectedUser.company.title}
+								</p>
+								<p>
+									<strong>Dział:</strong> {selectedUser.company.department}
+								</p>
+								<p>
+									<strong>Adres firmy:</strong>{" "}
+									{selectedUser.company.address.address},{" "}
+									{selectedUser.company.address.city},{" "}
+									{selectedUser.company.address.state}{" "}
+									{selectedUser.company.address.postalCode}
+								</p>
+								<p>
+									<strong>Adres domowy:</strong> {selectedUser.address.address},{" "}
+									{selectedUser.address.city}, {selectedUser.address.state}{" "}
+									{selectedUser.address.postalCode}
+								</p>
+							</>
+						) : (
+							<p style={{ color: "var(--text-muted)" }}>
+								Wybierz użytkownika z listy
+							</p>
+						)}
+					</div>
+				</div>
 			</div>
 		</main>
 	);
