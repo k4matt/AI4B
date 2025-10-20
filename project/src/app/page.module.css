@@ -16,7 +16,7 @@
 }
 
 .logo {
-	max-height: 30px;
+	height: 30px;
 	margin-bottom: 2px;
 }
 
@@ -59,7 +59,8 @@
     margin-right: auto;
     display: flex;
     align-items: center;
-    color: #cccccc;
+    color: var(--text-muted);
+    opacity: 0.5;
 }
 
 .group {
@@ -250,13 +251,6 @@
 	transition: transform 0.5s ease, opacity 0.4s ease;
 }
 
-.userDetails {
-	opacity: 0;
-	transform: translateX(0%);
-    height: fit-content;
-    max-height: 400px;
-}
-
 .viewWrapper.showDetails .list {
 	transform: translateX(-110%);
 }
@@ -267,10 +261,61 @@
 }
 
 .userDetails {
-	background: var(--bg-light);
-	border: 1px solid var(--border-muted);
-	border-radius: 10px;
-	padding: 1.5rem 2rem;
+  background: var(--bg-light);
+  border: 1px solid var(--border-muted);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  height: fit-content;
+  max-height: 500px;
+}
+
+.userName {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text);
+  border-bottom: 1px solid var(--border-muted);
+  padding-bottom: 0.5rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-left: 10px;
+}
+
+.userInfo p {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.userInfo .label {
+  font-weight: 600;
+  color: var(--primary);
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.backBtn {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  padding: 0;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.backBtn:hover {
+  color: var(--text);
 }
 
 @keyframes slideIn {
@@ -284,27 +329,12 @@
 	}
 }
 
-.backBtn {
-	background: transparent;
-	border: none;
-	color: var(--primary);
-	font-weight: 600;
-	cursor: pointer;
-	margin-bottom: 1rem;
-	padding: 0;
-	font-size: 1rem;
-	transition: color 0.2s ease;
-}
-
-.backBtn:hover {
-	color: var(--text);
-}
-
 .pagination {
 	display: flex;
 	justify-content: center;
 	margin: 20px 0;
 	gap: 5px;
+	width: 100%;
 }
 
 .pagination button {

@@ -59,7 +59,7 @@ export default function HomePage() {
 	const closeUser = () => setSelectedUser(null);
 
 	const goToPage = (page: number) => setCurrentPage(page);
-	
+
 	return (
 		<main className={styles.container}>
 			<div className={styles.dash}>
@@ -82,7 +82,10 @@ export default function HomePage() {
 							type="text"
 							placeholder=" "
 							value={search}
-							onChange={(e) => setSearch(e.target.value)}
+							onChange={(e) => {
+								setSearch(e.target.value);
+								goToPage(1);
+							}}
 							className={styles.search}
 						/>
 						<label className={styles.searchLabel}>
@@ -119,65 +122,59 @@ export default function HomePage() {
 										</div>
 									</li>
 							))
-							: filtered.map((user) => (
-									<li
-										key={user.id}
-										className={styles.card}
-										onClick={() => openUser(user)}
-									>
-										<div className={styles.cardHeader}>
-											<h3>
-												{user.firstName} {user.lastName}
-											</h3>
-											<p>
-												<TbBuildingSkyscraper />
-												{user.company.name}
-											</p>
-										</div>
-									</li>
+							: paginated.map((user) => (
+								<li
+									key={user.id}
+									className={styles.card}
+									onClick={() => openUser(user)}
+								>
+									<div className={styles.cardHeader}>
+										<h3>
+											{user.firstName} {user.lastName}
+										</h3>
+										<p>
+											<TbBuildingSkyscraper />
+											{user.company.name}
+										</p>
+									</div>
+								</li>
+						))}
+						<div className={styles.pagination}>
+							{Array.from({ length: totalPages }, (_, i) => (
+								<button
+									key={i + 1}
+									onClick={() => goToPage(i + 1)}
+									className={currentPage === i + 1 ? styles.activePage : ""}
+								>
+									{i + 1}
+								</button>
 							))}
+						</div>
 					</ul>
 
 					<div className={styles.userDetails}>
 						{selectedUser ? (
 							<>
-								<button className={styles.backBtn} onClick={closeUser}>
-									← Powrót
-								</button>
-								<h2>
-									{selectedUser.firstName} {selectedUser.lastName}
-								</h2>
-								<p>
-									<strong>Telefon:</strong> {selectedUser.phone}
-								</p>
-								<p>
-									<strong>Email:</strong> {selectedUser.email}
-								</p>
-								<p>
-									<strong>Firma:</strong> {selectedUser.company.name}
-								</p>
-								<p>
-									<strong>Stanowisko:</strong> {selectedUser.company.title}
-								</p>
-								<p>
-									<strong>Dział:</strong> {selectedUser.company.department}
-								</p>
-								<p>
-									<strong>Adres firmy:</strong>{" "}
-									{selectedUser.company.address.address},{" "}
-									{selectedUser.company.address.city},{" "}
-									{selectedUser.company.address.state}{" "}
-									{selectedUser.company.address.postalCode}
-								</p>
-								<p>
-									<strong>Adres domowy:</strong> {selectedUser.address.address},{" "}
-									{selectedUser.address.city}, {selectedUser.address.state}{" "}
-									{selectedUser.address.postalCode}
-								</p>
+							<button className={styles.backBtn} onClick={closeUser}>
+								← Powrót
+							</button>
+							<h2 className={styles.userName}>
+								{selectedUser.firstName} {selectedUser.lastName}
+							</h2>
+
+							<div className={styles.userInfo}>
+								<p><span className={styles.label}>Telefon:</span> {selectedUser.phone}</p>
+								<p><span className={styles.label}>Email:</span> {selectedUser.email}</p>
+								<p><span className={styles.label}>Firma:</span> {selectedUser.company.name}</p>
+								<p><span className={styles.label}>Stanowisko:</span> {selectedUser.company.title}</p>
+								<p><span className={styles.label}>Dział:</span> {selectedUser.company.department}</p>
+								<p><span className={styles.label}>Adres firmy:</span> {selectedUser.company.address.address}, {selectedUser.company.address.city}, {selectedUser.company.address.state} {selectedUser.company.address.postalCode}</p>
+								<p><span className={styles.label}>Adres domowy:</span> {selectedUser.address.address}, {selectedUser.address.city}, {selectedUser.address.state} {selectedUser.address.postalCode}</p>
+							</div>
 							</>
 						) : (
 							<p style={{ color: "var(--text-muted)" }}>
-								Wybierz użytkownika z listy
+							Wybierz użytkownika z listy
 							</p>
 						)}
 					</div>
