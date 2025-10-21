@@ -42,6 +42,7 @@ export default function ThemeSwitch() {
                 className={styles.themeSwitchCheckbox}
                 checked={isDark}
                 onChange={toggleTheme}
+                id="theme-toggle"
             />
             <div className={styles.themeSwitchContainer}>
                 <div className={styles.themeSwitchClouds}></div>

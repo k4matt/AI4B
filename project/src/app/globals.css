@@ -3,7 +3,7 @@
 html,
 body {
 	max-width: 100vw;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 
 body {
@@ -15,12 +15,62 @@ body {
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+	
+	position: relative;
+}
+
+*,
+*::before,
+*::after {
+	scrollbar-width: auto;
+	scrollbar-color: var(--primary) var(--bg);
+}
+
+::-webkit-scrollbar {
+	width: 16px;
+	height: 16px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+	border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--primary);
+	border-radius: 999px;
+	border: 4px solid var(--bg);
+	background-clip: padding-box;
+	box-shadow: 0 6px 18px rgba(2,6,23,0.08), inset 0 1px 0 rgba(255,255,255,0.06);
+	transition: all 0.3s ease;
+	min-height: 36px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	transform: translateY(0) scale(1.04);
+	box-shadow: 0 10px 26px rgba(2,6,23,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+	opacity: 0.95;
+}
+
+::-webkit-scrollbar-thumb:active {
+	transform: scale(0.98);
+	box-shadow: 0 6px 14px rgba(2,6,23,0.14), inset 0 1px 0 rgba(255,255,255,0.10);
+}
+
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-track-piece {
+	background: transparent;
 }
 
 * {
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 a {
@@ -52,7 +102,7 @@ html.dark, :root.dark {
 	--text-muted: oklch(0.76 0 205);
 	--highlight: oklch(0.5 0 205);
 	--border: oklch(0.4 0 205);
-	--border-muted: oklch(0.2 0 205);
+	--border-muted: oklch(29.313% 0.00003 271.152);
 	--primary: oklch(57.714% 0.15758 248.587);
 	--secondary: oklch(74.105% 0.13661 311.214);
 	--danger: oklch(0.7 0.05 30);
@@ -69,7 +119,6 @@ html.dark body {
 .color-theme-loading,
 .color-theme-loading body {
     background-color: oklch(0.96 0 205);
-    transition: none !important;
 }
 
 @media (prefers-color-scheme: dark) {

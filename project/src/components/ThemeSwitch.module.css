@@ -133,7 +133,6 @@
     transition: var(--transition);
 }
 
-/* actions */
 .themeSwitchCheckbox:checked + .themeSwitchContainer {
     background-color: var(--container-night-bg);
 }
