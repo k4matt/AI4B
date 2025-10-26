@@ -12,7 +12,7 @@
 	display: flex;
 	align-items: center;
 	gap: 5px;
-	padding: 20px 20px 10px 20px;
+	padding: 40px 20px 10px 20px;
 }
 
 .logo {
@@ -245,7 +245,7 @@
 	display: flex;
 	padding: 0 20px 120px 20px;
 	transition: all 0.5s ease;
-    height: calc(100vh - 192px);
+    height: calc(100vh - 212px);
     position: relative;
 }
 
@@ -628,7 +628,7 @@
     }
     .viewWrapper {
         position: unset;
-        height: calc(100vh - 300px);
+        height: calc(100vh - 320px);
     }
     .list {
         margin: 0 !important;
